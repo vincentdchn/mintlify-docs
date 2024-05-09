@@ -1,94 +1,537 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "CREWMATE API",
+    "version": "1.0",
     "license": {
-      "name": "MIT"
+      "name": "MIT License",
+      "identifier": "MIT",
+      "url": "https://spdx.org/licenses/MIT.html"
     },
-    "version": "1.0.0"
+    "description": "### This is the documentation of the private API used by official iOS app. Do not share!",
+    "contact": {
+      "email": "thomas@crewmate.fr",
+      "url": "https://crewmate.fr",
+      "name": "Thomas Albert"
+    },
+    "x-logo": {
+      "url": "img/crewmate.svg",
+      "altText": "Crewmate"
+    }
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://dev.api.crewmate.fr",
+      "description": "Dev"
+    },
+    {
+      "url": "https://api.crewmate.fr",
+      "description": "Prod"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "BEARER": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Asset",
+      "description": "Asset"
+    },
+    {
+      "name": "Asset Metrics",
+      "description": "Asset Metrics"
+    },
+    {
+      "name": "Asset Revisions",
+      "description": "Asset Revisions"
+    },
+    {
+      "name": "Auth",
+      "description": "Auth"
+    },
+    {
+      "name": "Category",
+      "description": "Category"
+    },
+    {
+      "name": "Collaborator",
+      "description": "Collaborator"
+    },
+    {
+      "name": "Dropbox",
+      "description": "Dropbox"
+    },
+    {
+      "name": "Entity",
+      "description": "Entity"
+    },
+    {
+      "name": "General",
+      "description": "General"
+    },
+    {
+      "name": "Model",
+      "description": "Model"
+    },
+    {
+      "name": "Model Publication",
+      "description": "Model Publication",
+      "x-displayName": "Publication"
+    },
+    {
+      "name": "OTP",
+      "description": "OTPs are used for security check.",
+      "x-displayName": "One-Time Password"
+    },
+    {
+      "name": "Payment",
+      "description": "Payment"
+    },
+    {
+      "name": "Project",
+      "description": "Project"
+    },
+    {
+      "name": "Project Events",
+      "description": "Project Events",
+      "x-displayName": "Events"
+    },
+    {
+      "name": "Project Revision",
+      "description": "Project Revision",
+      "x-displayName": "Revision"
+    },
+    {
+      "name": "Property",
+      "description": "Property"
+    },
+    {
+      "name": "Provider",
+      "description": "Provider"
+    },
+    {
+      "name": "User",
+      "description": "User"
+    },
+    {
+      "name": "User Avatar",
+      "description": "User Avatar",
+      "x-displayName": "Avatar"
+    },
+    {
+      "name": "User Events",
+      "description": "User Events",
+      "x-displayName": "Events"
+    },
+    {
+      "name": "User Invitation",
+      "description": "User Invitation"
     }
   ],
   "paths": {
-    "/plants": {
+    "/": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+        "summary": "Retreive app details",
+        "operationId": "get-appinfo",
+        "tags": [
+          "General"
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "ios_app": {
+                      "type": "object",
+                      "properties": {
+                        "current_version": {
+                          "type": "string",
+                          "example": "1.0"
+                        },
+                        "release_date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-02-14 15:09:00"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Use this endpoint to retrieve the app details",
+        "security": []
+      }
+    },
+    "/assets": {
+      "get": {
+        "summary": "List all Assets (App)",
+        "responses": {
+          "200": {
+            "description": "All the assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assets": {
+                      "type": "object",
+                      "properties": {
+                        "brands": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Brand"
+                          }
+                        },
+                        "cities": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/City"
+                          }
+                        },
+                        "crew_positions": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/CrewPosition"
+                          }
+                        },
+                        "crew_sections": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/CrewSection"
+                          }
+                        },
+                        "projects_types": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ProjectType"
+                          }
+                        },
+                        "rental_groups": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/RentalGroup"
+                          }
+                        },
+                        "rental_houses": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/RentalHouse"
+                          }
+                        },
+                        "gear_attributes": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GearAttribute"
+                          }
+                        },
+                        "gear_items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GearItem"
+                          }
+                        }
+                      }
+                    },
+                    "counts": {
+                      "type": "object",
+                      "properties": {
+                        "brands": {
+                          "type": "integer"
+                        },
+                        "cities": {
+                          "type": "integer"
+                        },
+                        "crew_positions": {
+                          "type": "integer"
+                        },
+                        "crew_sections": {
+                          "type": "integer"
+                        },
+                        "projects_types": {
+                          "type": "integer"
+                        },
+                        "rental_groups": {
+                          "type": "integer"
+                        },
+                        "rental_houses": {
+                          "type": "integer"
+                        },
+                        "gear_attributes": {
+                          "type": "integer"
+                        },
+                        "gear_items": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "model_info": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "last_update": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "now": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The current server date (to use as cursor for next call)"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "get-assets",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/since"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "type",
+            "description": "The asset type (optional) (for gear-attributes & gear-items only)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "entity",
+            "description": "The entity key (optional)"
+          }
+        ],
+        "description": "Use this endpoint to get all assets published or updated since a given date. This endpoint is used by iOS app to retreive all the assets of the catalog",
+        "tags": [
+          "Asset"
+        ]
+      }
+    },
+    "/assets-metrics": {
+      "post": {
+        "summary": "Create Asset Metrics",
+        "operationId": "post-assets-metrics",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "description": "Use this endpoint to register unsynchronized asset metrics.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metrics": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "description": "The metric type"
+                        },
+                        "date": {
+                          "type": "string",
+                          "description": "The date when metric has been created",
+                          "format": "date-time"
+                        },
+                        "asset_id": {
+                          "type": "string",
+                          "description": "The related asset identifier",
+                          "format": "uuid"
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "description": "Some additional metadata"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "date",
+                        "asset_id"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "metrics"
+                ]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "metrics": [
+                      {
+                        "type": "view",
+                        "date": "2019-08-24T14:15:22Z",
+                        "asset_id": "AST_B4695157-0D1D-8DA0-8F9E-5C23149389E4",
+                        "metadata": {}
+                      }
+                    ]
+                  }
                 }
               }
             }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
+        "tags": [
+          "Asset Metrics"
+        ]
+      }
+    },
+    "/assets/{asset_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/asset_id"
+        }
+      ],
+      "get": {
+        "summary": "Retreive Asset",
+        "tags": [
+          "Asset"
+        ],
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "OK\n\n*Body depends on asset type*",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "asset": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "enum": [
+                            "draft",
+                            "published",
+                            "hidden"
+                          ]
+                        }
+                      }
+                    },
+                    "revisions_batches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AssetRevisionBatch"
+                      }
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-asset",
+        "description": "### ADMIN SCOPE REQUIRED\n\nUse this endpoint to get the details of a given asset, and all its revisions.",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {}
+        }
+      },
+      "delete": {
+        "summary": "Destroy Asset",
+        "operationId": "delete-asset",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Asset Not Found"
+          }
+        },
+        "description": "Use this endpoint to permanently delete an asset.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |\n\n**Warning:** Assets should never be deleted when they have already been published. Prefer unpublishing them instead.\n\n*Note: When an asset has not been published yet, it can be deleted by the author itself. In this case, the SUPERADMIN scope is not required, but only the ADMIN one.*",
+        "tags": [
+          "Asset"
+        ],
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Publish/Unpublish Asset",
+        "operationId": "patch-asset",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Asset Not Found"
+          }
+        },
+        "description": "Use this endpoint to publish or unpublish an asset.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Asset"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "published": {
+                    "type": "boolean"
+                  }
                 }
               }
             }
@@ -96,100 +539,5373 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
+    "/assets/{asset_id}/revisions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/asset_id"
+        }
+      ],
+      "get": {
+        "summary": "List all Revisions",
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "revisions_batches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AssetRevisionBatch"
+                      }
+                    }
+                  },
+                  "required": [
+                    "revisions_batches"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-asset-revisions",
+        "description": "### ADMIN SCOPE REQUIRED\n\nUse this endpoint to get all the revisions of a given asset, sorted by `date` newest first.",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Asset Revisions"
+        ]
+      },
+      "post": {
+        "summary": "Create Revisions",
+        "operationId": "post-asset-revision",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "revisions_batch": {
+                      "$ref": "#/components/schemas/AssetRevisionBatch"
+                    }
+                  },
+                  "required": [
+                    "revisions_batch"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "description": "### ADMIN SCOPE REQUIRED\n\nUse this endpoint to create a new batch of revisions for a given asset.",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "changes": {
+                    "type": "object",
+                    "properties": {
+                      "$key": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object"
+                          },
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "comments": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "changes"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Asset Revisions"
+        ]
+      }
+    },
+    "/assets/{asset_id}/revisions/{revision_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/asset_id"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "revision_id",
+          "in": "path",
+          "required": true,
+          "description": "The revision ID"
+        }
+      ],
+      "patch": {
+        "summary": "Accept/Decline Revision",
+        "operationId": "patch-assets-revision",
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to Accept or Decline a revision.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accepted": {
+                    "type": "boolean"
+                  }
                 }
               }
             }
           }
+        },
+        "tags": [
+          "Asset Revisions"
+        ]
+      }
+    },
+    "/assets/type/{type}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "description": "The asset type"
         }
+      ],
+      "get": {
+        "summary": "List all Assets (Admin)",
+        "tags": [
+          "Asset"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK\n\n***Note:** Only main fields are given.*",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "$ref": "#/components/schemas/LocaleString"
+                          },
+                          "status": {
+                            "enum": [
+                              "draft",
+                              "published",
+                              "hidden"
+                            ]
+                          },
+                          "pending_revisions": {
+                            "type": "integer"
+                          },
+                          "creation_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "status",
+                          "pending_revisions"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "assets"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Type Not Exists",
+            "content": {}
+          }
+        },
+        "operationId": "get-assets-type",
+        "description": "### ADMIN SCOPE REQUIRED\n\nUse this endpoint to get all assets of a given type.\n\nAllowed types are:\n- `brand`\n- `city`\n- `crew-position`\n- `crew-section`\n- `project-type`\n- `rental-group`\n- `rental-house`\n- `gear-attribute` (with optional `?entity=key` query param)\n- `gear-item` (with optional `?entity=key` query param)\n\nThe body is completed depending of the type (see Models)",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {}
+        }
+      },
+      "post": {
+        "summary": "Create Asset",
+        "operationId": "post-asset",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The unique identifier (prefixed with AST)",
+                      "example": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08"
+                    },
+                    "name": {
+                      "$ref": "#/components/schemas/LocaleString"
+                    },
+                    "departments": {
+                      "type": "array",
+                      "description": "The allowed departments for this asset (null means appliable to all departments)",
+                      "items": {
+                        "enum": [
+                          "camera",
+                          "sound",
+                          "lighting",
+                          "grip"
+                        ]
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "draft"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "departments"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "### ADMIN SCOPE REQUIRED\n\nUse this endpoint to create an asset of a given type.\n\nAllowed types are:\n- `brand`\n- `city`\n- `crew-position`\n- `crew-section`\n- `project-type`\n- `rental-group`\n- `rental-house`\n- `gear-attribute`\n- `gear-item`",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "departments": {
+                    "$ref": "#/components/schemas/DepartmentEnum"
+                  }
+                },
+                "required": [
+                  "name",
+                  "departments"
+                ]
+              }
+            }
+          },
+          "description": "*Body depends on asset type*"
+        },
+        "tags": [
+          "Asset"
+        ]
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "operationId": "login",
+        "responses": {
+          "201": {
+            "description": "User Logged In",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "session_token": {
+                      "type": "string",
+                      "example": "31|2q8m51Pp5NQJaT1I81D6K0WZI6c7Os0SyNlc9fwd"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "message": "The provided credentials are incorrect.",
+                    "errors": {
+                      "email": "The provided credentials are incorrect."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Use this endpoint to login user with credentials (email & password).\n\n**Important:** for backoffice, the `admin` flag must be set. For the iOS app, the `apple_token` is required in Production environment.\n\nThe headers can ben sent on every requests, it will update the informations.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/language"
+          },
+          {
+            "$ref": "#/components/parameters/platform"
+          },
+          {
+            "$ref": "#/components/parameters/platform_version"
+          },
+          {
+            "$ref": "#/components/parameters/notification_token"
+          },
+          {
+            "$ref": "#/components/parameters/device_model"
+          },
+          {
+            "$ref": "#/components/parameters/device_version"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@doe.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "love-my-job!"
+                  },
+                  "admin": {
+                    "type": "boolean",
+                    "description": "A flag indicating wether the admin scope should be\ngranted. *Default: False*"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": []
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "post-logout",
+        "responses": {
+          "205": {
+            "description": "Reset Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "description": "Use this endpoint to log out current user and destroy the session",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/model": {
+      "get": {
+        "summary": "Retreive public Models",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "last_update": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "entities": {
+                      "description": "Hidden if `soft=true`",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Entity"
+                      }
+                    },
+                    "categories": {
+                      "description": "Hidden if `soft=true`",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    },
+                    "providers": {
+                      "description": "Hidden if `soft=true`",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Provider"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "get-models",
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "soft",
+            "description": "Set to get metadata only"
+          }
+        ],
+        "description": "Use this endpoint to get the active dynamic model. Use **?soft=true** to get only metadata (ie. `id` and `last_update`) without content.",
+        "tags": [
+          "Model Publication"
+        ]
+      }
+    },
+    "/model/categories/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The category ID"
+        }
+      ],
+      "patch": {
+        "summary": "Update a Category",
+        "operationId": "patch-model-categories-category_id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "description": "Category Not Found"
+          }
+        },
+        "description": "Use this endpoint to update a category from dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "parent_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The parent category ID"
+                  },
+                  "entity": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The related entity key (for final categories only)"
+                  },
+                  "color": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The color HTML code prefixed with # (only for root categories)"
+                  },
+                  "default_grouping_filter_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "ID of provider (filter type) used to generate sub-category"
+                  },
+                  "index": {
+                    "type": "integer",
+                    "description": "The category sorting index"
+                  }
+                }
+              }
+            }
+          },
+          "description": "The updated fields"
+        },
+        "tags": [
+          "Category"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Category",
+        "operationId": "delete-category",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "description": "Category Not Found"
+          }
+        },
+        "description": "Use this endpoint to delete a category from dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Category"
+        ]
+      }
+    },
+    "/model/department/{department}/categories": {
+      "get": {
+        "summary": "List all Categories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "get-categories",
+        "description": "Use this endpoint to get all categories for a given department.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Category"
+        ]
+      },
+      "post": {
+        "summary": "Create Category",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "post-category",
+        "description": "Use this endpoint to create a category for a given department.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "parent_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The parent category ID"
+                  },
+                  "entity": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The related entity key (for final categories only)"
+                  },
+                  "color": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The color HTML code prefixed with # (only for root categories)"
+                  },
+                  "default_grouping_filter_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "ID of provider (filter type) used to generate sub-category"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "department",
+          "in": "path",
+          "required": true,
+          "description": "The department key"
+        }
+      ]
+    },
+    "/model/entities": {
+      "get": {
+        "summary": "List all Entities",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entities": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Entity"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "get-model-entities",
+        "description": "Use this endpoint to get all entities of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Entity"
+        ]
+      },
+      "post": {
+        "summary": "Create Entity",
+        "operationId": "post-model-entity",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entity"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "attribute",
+                      "item"
+                    ]
+                  },
+                  "key": {
+                    "type": "string",
+                    "description": "The unique key (lowercased)"
+                  },
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "departments": {
+                    "type": "array",
+                    "description": "The appliable departments (set empty when appliable to all departments)",
+                    "items": {
+                      "enum": [
+                        "camera",
+                        "sound",
+                        "lighting",
+                        "grip"
+                      ]
+                    }
+                  },
+                  "assets_name_template": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "assets_sort_descriptors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Some sort descriptors for customizing the assets sorting"
+                  },
+                  "composable_set_items": {
+                    "type": "string",
+                    "description": "The key of the entity's relationship targetting the selectable items (for composable sets only)"
+                  },
+                  "parentable_entities": {
+                    "type": "array",
+                    "description": "The keys of the entities that can be set as parent of a given entry of the current entity. Empty array means all entities are appliable, whereas a null value (default) means no parent is assignable.",
+                    "items": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "description": "Use this endpoint to create an entity for the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "tags": [
+          "Entity"
+        ]
+      }
+    },
+    "/model/entities/{entity_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/entity_id"
+        }
+      ],
+      "patch": {
+        "summary": "Update Entity",
+        "operationId": "patch-model-entity",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to update an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "departments": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DepartmentEnum"
+                    }
+                  },
+                  "assets_name_template": {
+                    "$ref": "#/components/schemas/LocaleString"
+                  },
+                  "assets_sort_descriptors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Some sort descriptors for customizing the assets sorting"
+                  },
+                  "composable_set_items": {
+                    "type": "string",
+                    "description": "The key of the entity's relationship targetting the selectable items (for composable sets only)"
+                  },
+                  "parentable_entities": {
+                    "type": "array",
+                    "description": "The keys of the entities that can be set as parent of a given entry of the current entity. Empty array means all entities are appliable, whereas a null value (default) means no parent is assignable.",
+                    "items": {}
+                  }
+                }
+              }
+            }
+          },
+          "description": "The updated fields\n\n**Note:** The entity's key is not editable."
+        },
+        "tags": [
+          "Entity"
+        ]
+      },
+      "delete": {
+        "summary": "Destroy Entity",
+        "operationId": "delete-model-entities-id",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to delete permanently an entity of the dynamic model. Related assets **are not deleted**.\\n\\n**Important:**\nBe very careful when deleting entities as they can be referenced within assets,\nproviders, etc.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Entity"
+        ]
+      }
+    },
+    "/model/entities/{entity_id}/properties": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/entity_id"
+        }
+      ],
+      "post": {
+        "summary": "Create Property",
+        "operationId": "post-property",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "description": "Use this endpoint to create a property for an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "The unique key (lowercased)"
+                  },
+                  "type": {
+                    "enum": [
+                      "bool",
+                      "integer",
+                      "decimal",
+                      "string",
+                      "locstring",
+                      "@entity"
+                    ],
+                    "description": "Use @ prefix to make a relationship to another entity"
+                  },
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString",
+                    "description": "The localized name"
+                  },
+                  "helper": {
+                    "$ref": "#/components/schemas/LocaleString",
+                    "description": "A localized helper message for the admin panel"
+                  },
+                  "array": {
+                    "type": "boolean",
+                    "description": "A boolean indicating if multiple values are allowed for this property"
+                  },
+                  "default": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "boolean"
+                      }
+                    ],
+                    "description": "The default value (for primitive properties only)"
+                  },
+                  "inverse": {
+                    "type": "string",
+                    "description": "The property key of the inverse relationship (for relationship properties only)"
+                  },
+                  "keypath": {
+                    "type": "string",
+                    "description": "The keypath to use for computing value(s) (for computed properties only)"
+                  },
+                  "sort_descriptors": {
+                    "type": "array",
+                    "description": "Some sort descriptors for ordering the values (for computed properties only)",
+                    "items": {}
+                  }
+                },
+                "required": [
+                  "key",
+                  "type",
+                  "name",
+                  "array"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Property"
+        ]
+      }
+    },
+    "/model/entities/{entity_id}/properties/{property_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/entity_id"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "property_id",
+          "in": "path",
+          "required": true,
+          "description": "The property ID"
+        }
+      ],
+      "patch": {
+        "summary": "Update Property",
+        "operationId": "patch-model-entities-entity_id-properties-id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "tags": [
+          "Property"
+        ],
+        "description": "Use this endpoint to update a property of an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "The property type (relationships have @ prefix followed by the destination entity key)",
+                    "enum": [
+                      "bool",
+                      "integer",
+                      "decimal",
+                      "string",
+                      "locstring",
+                      "@entity",
+                      "computed"
+                    ]
+                  },
+                  "name": {
+                    "$ref": "#/components/schemas/LocaleString",
+                    "description": "The localized name"
+                  },
+                  "helper": {
+                    "$ref": "#/components/schemas/LocaleString",
+                    "description": "A localized helper message for the admin panel"
+                  },
+                  "array": {
+                    "type": "boolean",
+                    "description": "A boolean indicating if several values are allowed for this property"
+                  },
+                  "default": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      }
+                    ],
+                    "description": "The default value",
+                    "items": {}
+                  },
+                  "inverse": {
+                    "type": "string",
+                    "description": "The property key of the inverse relationship (for relationship properties only)"
+                  },
+                  "keypath": {
+                    "type": "string",
+                    "description": "The keypath to use for computing value(s) (for computed properties only)"
+                  },
+                  "sort_descriptors": {
+                    "type": "array",
+                    "description": "Some sort descriptors for ordering the values (for computed properties only)",
+                    "items": {}
+                  }
+                }
+              }
+            }
+          },
+          "description": "The updated fields\n\n**Note:** The property's key is not editable."
+        }
+      },
+      "delete": {
+        "summary": "Delete Property",
+        "operationId": "delete-model-entities-entity_id-properties-id",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "tags": [
+          "Property"
+        ],
+        "description": "Use this endpoint to delete a property of an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/model/entities/{entity_id}/providers": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/entity_id"
+        }
+      ],
+      "post": {
+        "summary": "Create Provider",
+        "operationId": "post-provider",
+        "responses": {
+          "201": {
+            "description": "Provider created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "description": "Use this endpoint to create a provider for an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/model/entities/{entity_id}/providers/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/entity_id"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The provider ID"
+        }
+      ],
+      "patch": {
+        "summary": "Update Provider",
+        "operationId": "patch-provider",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Provider"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to update a provider of an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "description": "The updated content\n\n**Note:** The provider's type is not editable."
+        },
+        "tags": [
+          "Provider"
+        ]
+      },
+      "delete": {
+        "summary": "Destroy Provider",
+        "operationId": "delete-provider",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to permanently delete a provider of an entity of the dynamic model.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "tags": [
+          "Provider"
+        ]
+      }
+    },
+    "/model/publications": {
+      "get": {
+        "summary": "List all Publications",
+        "operationId": "get-model-publications",
+        "description": "Use this endpoint to list historical publication for the models\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "responses": {
+          "200": {
+            "description": "All Publications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "publications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Publication"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Model Publication"
+        ],
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Publication",
+        "operationId": "post-model-publication",
+        "responses": {
+          "201": {
+            "description": "Model Published"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "description": "Use this endpoint to publish the current version of the models. It will cache all elements (Entities, Categories, Badges etc...) at the current state.\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "tags": [
+          "Model Publication"
+        ],
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/model/publications/{publication_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "publication_id",
+          "in": "path",
+          "required": true,
+          "description": "The publication ID"
+        }
+      ],
+      "delete": {
+        "summary": "Destroy Publication",
+        "operationId": "delete-model-publication",
+        "description": "Use this endpoint to destroy a publication\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "tags": [
+          "Model Publication"
+        ],
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/otp": {
+      "post": {
+        "summary": "Create OTP",
+        "responses": {
+          "201": {
+            "description": "OTP Generated and sent to user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "otp": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "OTP Generated"
+                        },
+                        "status": {
+                          "type": "boolean",
+                          "description": "Confirmation that OTP is generated"
+                        },
+                        "expire_time": {
+                          "type": "integer",
+                          "description": "The valid period of the token in minutes",
+                          "example": 15
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "operationId": "create-otp",
+        "tags": [
+          "OTP"
+        ],
+        "description": "Use this endpoint to generate an One-Time Password. It is required to do some action like passwored reset. The authenticated user will receive the OTP by email. You can send it with the securised action to validate it."
+      }
+    },
+    "/payment/prices": {
+      "get": {
+        "deprecated": true,
+        "summary": "List all Prices",
+        "operationId": "get-prices",
+        "responses": {
+          "200": {
+            "description": "List of all active prices for licence plans",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plans": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LicencePlan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Payment"
+        ],
+        "security": []
+      }
+    },
+    "/payment/webhook": {
+      "post": {
+        "summary": "Webhook for services",
+        "description": "This webhook is used only by RevenueCat for now",
+        "operationId": "payment-webhook",
+        "responses": {
+          "200": {
+            "description": "Always return 200"
+          }
+        },
+        "tags": [
+          "Payment"
+        ],
+        "security": []
+      }
+    },
+    "/projects": {
+      "get": {
+        "summary": "List all Projects",
+        "operationId": "get-projects",
+        "responses": {
+          "200": {
+            "description": "Fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "project": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProjectIndex"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "description": "List all the projects of all users",
+        "tags": [
+          "Project"
+        ]
+      },
+      "post": {
+        "summary": "Create Project",
+        "operationId": "post-project",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "project": {
+                      "type": "object",
+                      "format": "uuid",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "PRJ_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA",
+                          "format": "uuid",
+                          "description": "The created project's ID"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Use this endpoint to create a new project on server and get an ID",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "John Doe S02",
+                    "description": "The project title."
+                  },
+                  "type_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "DBO_4D65EDC7-E02A-403F-8A92-D54E49930B85",
+                    "description": "The project type identifier."
+                  },
+                  "reference": {
+                    "type": "string",
+                    "example": "1ZFU4Y",
+                    "description": "A 6-character unique reference."
+                  },
+                  "creation_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The project creation date (on device)."
+                  }
+                },
+                "required": [
+                  "title",
+                  "type_id",
+                  "reference",
+                  "creation_date"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/projects/{project_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ],
+      "get": {
+        "summary": "Retreive Project",
+        "operationId": "get-project",
+        "responses": {
+          "200": {
+            "description": "Fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "project": {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ],
+        "description": "List all the projects of all users",
+        "tags": [
+          "Project"
+        ]
+      }
+    },
+    "/projects/{project_id}/collaborators": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ],
+      "get": {
+        "summary": "List all Collaborators",
+        "tags": [
+          "Collaborators"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborators": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Collaborator"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-collaborators",
+        "description": "Use this endpoint to get the collaborators details of a given project (only allowed for the project's author and active collaborators)\n\nAdd *\"accepted\"* or *\"invited\"* query params if you want only one type. Otherwise every collaborators and invitations will be sent",
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "accepted",
+            "description": "ACCEPTED Only"
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "invited",
+            "description": "INVITED Only"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Collaborator",
+        "operationId": "post-collaborator",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "EVT_E5E99688-8CC6-48B2-AE7D-0B1C1AE7FF48"
+                        },
+                        "type": {
+                          "type": "string",
+                          "default": "COLLABORATOR_CREATED"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-02-15 14:49:17"
+                        },
+                        "target_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "PRJ_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA"
+                        },
+                        "content": {
+                          "$ref": "#/components/schemas/Collaborator"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "description": "Use this endpoint to invite a new collaborator for a given project (only allowed for the project's author and admin collaborators)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john@doe.com"
+                  },
+                  "authorizations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "department": {
+                          "$ref": "#/components/schemas/DepartmentEnum"
+                        },
+                        "authorization": {
+                          "type": "string",
+                          "enum": [
+                            "READONLY",
+                            "READWRITE",
+                            "ADMIN"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "department",
+                        "authorization"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "email",
+                  "authorizations"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collaborator"
+        ]
+      }
+    },
+    "/projects/{project_id}/collaborators/{collaborator_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "collaborator_id",
+          "in": "path",
+          "required": true,
+          "description": "An existant collaborator ID"
+        }
+      ],
+      "get": {
+        "summary": "Retreive Collaborator",
+        "tags": [
+          "Collaborator"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborator": {
+                      "$ref": "#/components/schemas/Collaborator"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-collaborator",
+        "description": "Use this endpoint to get the details of a collaborator for a given project (only allowed for the project's author and active collaborators)"
+      },
+      "patch": {
+        "summary": "Update Collaborator",
+        "operationId": "patch-collaborator",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborator": {
+                      "$ref": "#/components/schemas/Collaborator"
+                    },
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to update the authorizations of a collaborator (only allowed for the project's author and ADMIN collaborators)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "authorizations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "department": {
+                          "$ref": "#/components/schemas/DepartmentEnum"
+                        },
+                        "authorization": {
+                          "type": "string",
+                          "enum": [
+                            "READONLY",
+                            "READWRITE",
+                            "ADMIN"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "department",
+                        "authorization"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "authorizations"
+                ]
+              }
+            }
+          },
+          "description": "Provide the new authorizations for the collaborator"
+        },
+        "tags": [
+          "Collaborator"
+        ]
+      },
+      "delete": {
+        "summary": "Destroy Collaborator",
+        "operationId": "delete-projects-projectID-collaborators-collaboratorID",
+        "responses": {
+          "201": {
+            "description": "Event Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to remove a collaborator (or invited collaborator) from a given project (only allowed for the project's author, admin collaborators, and the collaborator itself)",
+        "tags": [
+          "Collaborator"
+        ]
+      }
+    },
+    "/projects/{project_id}/dropbox-token": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ],
+      "get": {
+        "summary": "Retreive Token for Dropbox API",
+        "description": "Get a short-lived token for accessing the Dropbox API for that project",
+        "operationId": "get-project-dropbox-token",
+        "tags": [
+          "Dropbox"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Token from Dropbox that has been crypted by server"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "The number of second when the token will expire"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "description": "Dropbox server is not available"
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/events": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ],
+      "get": {
+        "summary": "List all Project Events",
+        "tags": [
+          "Project Events"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Event"
+                      }
+                    },
+                    "now": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The current server date (to provide in \"since\" parameter for next call)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden (User has no authorization for this project)"
+          },
+          "404": {
+            "description": "Not Found (Invalid Project ID)"
+          }
+        },
+        "operationId": "get-project-events",
+        "description": "Use this endpoint to get the events of a given project (only allowed for the project's author and active collaborators)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "since": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The given date from last fetch (or null when fetching all events)"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Results can be filtered by specifying an optional date to fetch the events from\n\n*Notes: this date corresponds to the creation date of the event on server, not the event's date! It should only be used as a cursor.*"
+        }
+      },
+      "post": {
+        "summary": "Register Project Events",
+        "operationId": "post-project-events",
+        "responses": {
+          "201": {
+            "description": "Events Created/Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events_status": {
+                      "type": "object",
+                      "description": "Status for all events sent in request\n",
+                      "properties": {
+                        "$event_uuid": {
+                          "type": "object",
+                          "format": "uuid",
+                          "example": "EVT_E5E99688-8CC6-48B2-AE7D-0B1C1AE7FF48",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "description": "The event status",
+                              "enum": [
+                                "PROCESSED",
+                                "SAVED",
+                                "UNAUTHORIZED",
+                                "FAILED"
+                              ]
+                            },
+                            "error": {
+                              "type": "string",
+                              "description": "An optional error for debug purposes"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to register new events for a given project (only allowed for  the project's author or active collaborators with at least a READWRITE authorization)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "events": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Project Events"
+        ]
+      }
+    },
+    "/projects/{project_id}/gear-list-revisions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/project_id"
+        }
+      ],
+      "post": {
+        "summary": "Create Revision",
+        "description": "Create a new revision for the given project and department.",
+        "operationId": "post-revision",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "department": {
+                    "$ref": "#/components/schemas/DepartmentEnum",
+                    "description": "The targeted department for the revision"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Revision created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    }
+                  }
+                },
+                "example": {
+                  "event": {
+                    "id": "EVT_E5E99688-8CC6-48B2-AE7D-0B1C1AE7FF48",
+                    "type": "GEAR_LIST_REVISION_CREATED",
+                    "target_id": "REV_12345678-ABCD-90EF-1234-567890ABCDEF",
+                    "date": "2023-02-15T19:19:12Z",
+                    "author_id": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81",
+                    "app_build": 123,
+                    "content": {
+                      "department": "camera",
+                      "revision_number": 1,
+                      "changes_events_ids": [
+                        "EVT_E5E9757388-877836-783B2-AE783D-0B783A435F48",
+                        "EVT_FE4G977367-15F4A7-41C42-B78D97-A456F487D1CB"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "tags": [
+          "Project Revision"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List all Users",
+        "operationId": "get-users",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/search",
+            "description": "Will search into `email`, `first_name`, `last_name`, and `unique_identifier`"
+          },
+          {
+            "name": "phone_number",
+            "description": "Filter by phone number",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "phone_number"
+            }
+          },
+          {
+            "name": "country_code",
+            "description": "Filter by country code",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "country_code"
+            }
+          },
+          {
+            "name": "email_verified",
+            "description": "Filter only user that have email verified or not. Leave `null` to list all users",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/limit",
+            "description": "Maximum number of user by request _(default: 50)_"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List all Users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 5460,
+                      "description": "Total of active users"
+                    },
+                    "last_page": {
+                      "type": "integer",
+                      "example": 14,
+                      "description": "The last page number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        },
+        "description": "Use this endpoint to get all Users\n\n### Policies\n| Admin Level |\n| --- |\n| `superadmin` |",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "BEARER": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create User",
+        "operationId": "post-users",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/language"
+          },
+          {
+            "$ref": "#/components/parameters/platform"
+          },
+          {
+            "$ref": "#/components/parameters/platform_version"
+          },
+          {
+            "$ref": "#/components/parameters/notification_token"
+          },
+          {
+            "$ref": "#/components/parameters/device_model"
+          },
+          {
+            "$ref": "#/components/parameters/device_version"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "session_token": {
+                      "type": "string",
+                      "format": "token",
+                      "example": "31|2q8m51Pp5NQJaT1I81D6K0WZI6c7Os0SyNlc9fwd"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/Validation"
+          }
+        },
+        "description": "Use this endpoint to create a new user",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RegisterRequest"
+        },
+        "tags": [
+          "User"
+        ],
+        "security": []
+      }
+    },
+    "/users/{user_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "Retreive User",
+        "operationId": "get-user",
+        "responses": {
+          "200": {
+            "description": "User Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "email_verified": {
+                              "type": "boolean",
+                              "description": "For logged user only or admin"
+                            },
+                            "max_sessions": {
+                              "type": "object",
+                              "description": "Admin scope only"
+                            },
+                            "sessions": {
+                              "type": "array",
+                              "description": "Admin scope only",
+                              "items": {
+                                "$ref": "#/components/schemas/Session"
+                              }
+                            },
+                            "projects": {
+                              "type": "array",
+                              "description": "Admin scope only",
+                              "items": {
+                                "$ref": "#/components/schemas/Project"
+                              }
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Admin scope only"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Admin scope only"
+                            },
+                            "email_verified_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "description": "Admin scope only"
+                            },
+                            "blocked": {
+                              "type": "boolean",
+                              "description": "Admin scope only"
+                            },
+                            "authorizations": {
+                              "type": "object",
+                              "description": "Admin scope only"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "description": "Use this endpoint to retrieve the details of a user.",
+        "tags": [
+          "User"
+        ]
+      },
+      "patch": {
+        "summary": "Update User",
+        "operationId": "patch-user",
+        "responses": {
+          "200": {
+            "description": "User Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized",
+            "description": "Invalid Password or not allowed"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/Validation"
+          }
+        },
+        "description": "Use this endpoint to update the details of a user\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "example": "+33600000000"
+                  },
+                  "country_code": {
+                    "type": "string",
+                    "example": "FR"
+                  },
+                  "type": {
+                    "$ref": "#/components/schemas/UserType",
+                    "description": "Admin scope only"
+                  },
+                  "authorizations": {
+                    "type": "object",
+                    "description": "Admin scope only"
+                  },
+                  "blocked": {
+                    "type": "boolean",
+                    "description": "Admin scope only"
+                  }
+                }
+              },
+              "examples": {
+                "Update Name": {
+                  "value": {
+                    "first_name": "Rebecca",
+                    "last_name": "Courneuve"
+                  }
+                },
+                "Block User": {
+                  "value": {
+                    "blocked": true
+                  }
+                }
+              }
+            }
+          },
+          "description": "Properties to update"
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "delete": {
+        "summary": "Destroy User",
+        "operationId": "delete-user",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized",
+            "description": "Forbidden (Password not matching or user not allowed)"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "description": "Use this endpoint to delete a user\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "description": "User password is required to perform deletion except for admin scope"
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/users/{user_id}/avatar": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "post": {
+        "summary": "Upload Avatar",
+        "operationId": "upload-avatar",
+        "description": "Use this endpoint to upload an avatar. JPEG 512x512\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |",
+        "tags": [
+          "User Avatar"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar_picture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Avatar uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar_url": {
+                      "type": "string",
+                      "example": "https://api.crewmate.fr/medias/avatars/AVT_1D921E18-65F1-4A70-9DE1-C34FF61C8D81.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Destroy Avatar",
+        "operationId": "delete-avatar",
+        "description": "Use this endpoint to destroy the current avatar.\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |",
+        "tags": [
+          "User Avatar"
+        ],
+        "responses": {
+          "204": {
+            "description": "Destroyed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        }
+      }
+    },
+    "/users/{user_id}/events": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "List all User Events",
+        "operationId": "get-user-events",
+        "tags": [
+          "User Events"
+        ],
+        "responses": {
+          "200": {
+            "description": "List all User Events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Event"
+                      }
+                    },
+                    "now": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The current server date (to provide in \"since\" parameter for next call)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "description": "Use this endpoint to get the events of a given user (only allowed for the current user)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "since": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The given date from last fetch (or null when fetching all events)"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Results can be filtered by specifying an optional date to fetch the events from\n\n*Notes: this date corresponds to the creation date of the event on server, not the event's date! It should only be used as a cursor.*"
+        }
+      },
+      "post": {
+        "summary": "Register User Events",
+        "operationId": "post-user-events",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "processed_events_ids": {
+                      "type": "array",
+                      "description": "The IDs of events that have been processed within this request",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "EVT_E5E99688-8CC6-48B2-AE7D-0B1C1AE7FF48"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized",
+            "description": "Forbidden (Only current user can register its events)"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "description": "Use this endpoint to register new events for a given user (only allowed for  the current user itself)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Event"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Events"
+        ]
+      }
+    },
+    "/users/{user_id}/invitations": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "List all User Invitations",
+        "tags": [
+          "User Invitation"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invitations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "CLB_2F790E21-22B5-4988-AB4F-36B997E0859E",
+                            "format": "uuid"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-02-15 13:08:03"
+                          },
+                          "sender_id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "USR_541F503C-D790-4C65-95EE-86F5C1596B18"
+                          },
+                          "project": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/Project"
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "author_id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "example": "USR_541F503C-D790-4C65-95EE-86F5C1596B18"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-invitations",
+        "description": "Use this endpoint to get the pending invitations for a given user (only allowed for the current user itself)"
+      }
+    },
+    "/users/{user_id}/invitations/{invitation_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "invitation_id",
+          "in": "path",
+          "required": true,
+          "description": "An existant invitation ID"
+        }
+      ],
+      "patch": {
+        "summary": "Update User Invitation",
+        "operationId": "patch-users-userID-invitations-invitationID",
+        "responses": {
+          "201": {
+            "description": "Created (Invitation Accepted or Declined)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborator": {
+                      "$ref": "#/components/schemas/Collaborator"
+                    },
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "collaborator": {
+                      "$ref": "#/components/schemas/Collaborator"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "description": "Use this endpoint to accept or decline an invitation to collaborate\n(only for the current user itself)\n### Event\nContent of the event when invitation accepted has :\n- `accepted_date` datetime\n- `user_id` uuid string",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accepted": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Invitation"
+        ]
+      }
+    },
+    "/users/{user_id}/licences": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "List all Licences",
+        "operationId": "get-user-licences",
+        "responses": {
+          "200": {
+            "description": "All licences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "licences": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Licence"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "tags": [
+          "Payment"
+        ],
+        "description": "List of all licences for the User\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |"
+      }
+    },
+    "/users/{user_id}/password": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "patch": {
+        "summary": "Update Password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "old_password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "my_old_corrupted_password"
+                  },
+                  "new_password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "I_L0V3_S3CUR1TY_D@CFXPjE6k$i7fZ9kUpheJ84f"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest",
+            "description": "Old password is not matching"
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "patch-user-password",
+        "description": "Use this endpoint to update the password for the user\n\n### Policies\n| OTC | Logged User |\n| --- | --- |\n| *required* | Only |"
+      }
+    },
+    "/users/{user_id}/projects": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "List all User Projects",
+        "tags": [
+          "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "own_projects": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Project"
+                      }
+                    },
+                    "collaborating_projects": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Project"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "author_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "USR_541F503C-D790-4C65-95EE-86F5C1596B18"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "operationId": "get-users-userID-projects",
+        "security": [
+          {
+            "BEARER": []
+          }
+        ],
+        "description": "Use this endpoint to get the list of projects for a given user (only allowed for the current user itself)"
+      }
+    },
+    "/users/{user_id}/send-confirmation-link": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "post": {
+        "summary": "Send email confirmation link",
+        "operationId": "post-users-userID-send_confirmation",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "description": "Use this endpoint to (re)send the email confirmation link (only allowed for the user itself)",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/users/{user_id}/sessions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        }
+      ],
+      "get": {
+        "summary": "List User Sessions",
+        "operationId": "get-users-sessions",
+        "responses": {
+          "200": {
+            "description": "Fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Session"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "ip": {
+                                "type": "string",
+                                "format": "ip",
+                                "example": "194.157.95.167",
+                                "description": "*Admin only* | Last IP registered."
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2019-08-24T14:15:22Z",
+                                "description": "*Admin only* | Expiration date."
+                              },
+                              "agent": {
+                                "type": "string",
+                                "example": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+                                "description": "*Admin only* | User-Agent Metadata."
+                              },
+                              "origin": {
+                                "type": "string",
+                                "example": "https://admin.crewmate.fr",
+                                "description": "*Admin only* | The origin of the last request of the user."
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/UserNotFound"
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "description": "Use this endpoint to get the active sessions of a given user\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |"
+      }
+    },
+    "/users/{user_id}/sessions/{session_id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/user_id"
+        },
+        {
+          "$ref": "#/components/parameters/session_id"
+        }
+      ],
+      "patch": {
+        "deprecated": true,
+        "summary": "Update Session",
+        "operationId": "patch_session",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "description": "Use this endpoint on a regular basis to check connection with server and to update the current session details",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_info": {
+                    "$ref": "#/components/schemas/Session"
+                  },
+                  "editing_project_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Provide up to date session details and the ID of the project being edited"
+        },
+        "tags": [
+          "Auth"
+        ]
+      },
+      "delete": {
+        "summary": "Destroy User Session",
+        "operationId": "delete-users-sessions",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/NoContent"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "User or Session Not Found"
+          }
+        },
+        "description": "Use this endpoint to destroy/invalidate an active Session\n\n### Policies\n| Admin Level | Current User |\n| --- | --- |\n| `superadmin` | Only |",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/users/search": {
+      "get": {
+        "summary": "Search Users",
+        "responses": {
+          "200": {
+            "description": "Users Found (or empty result)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/InvalidRequest"
+          }
+        },
+        "operationId": "get-users-search",
+        "description": "Use this endpoint to search users matching given emails or IDs\n\n*Note: only verified users will be returned*",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "emails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "john@doe.com"
+                    }
+                  },
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Provide either `emails` or `IDs` (or both) depending on what you are looking for"
+        },
+        "tags": [
+          "User"
+        ]
       }
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "LocaleString": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
+          "en": {
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "fr": {
             "type": "string"
+          }
+        },
+        "description": "Localizable content",
+        "example": {
+          "en": "Hello World !",
+          "fr": "Bonjour les gens !"
+        }
+      },
+      "Brand": {
+        "title": "Brand",
+        "type": "object",
+        "description": "A model representing a brand/manufacturer",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "ARRI"
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with DBO)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "last_update"
+        ]
+      },
+      "City": {
+        "title": "City",
+        "description": "A model representing a city (used for rental houses)",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Paris"
+          },
+          "country_code": "FR"
+        },
+        "type": "object",
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "The 2-character ISO country code"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "country_code",
+          "last_update"
+        ]
+      },
+      "CrewPosition": {
+        "title": "CrewPosition",
+        "description": "A model representing a crew position (ex. Cinematographer, Director, Producer, 1st AC...).\n\nCrewPositions are sorted by index within each section.\n\nWhen a CrewPosition is available for several departments, one (or more) entry(ies) can be created for each one.\n\nIf a position should be shared between all departments (for example a Producer, a Director...), use the special key `shared` as unique department.",
+        "type": "object",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Cinematographer",
+            "fr": "Chef opérateur"
+          },
+          "plural": {
+            "en": "Cinematographers",
+            "fr": "Chefs opérateurs"
+          },
+          "section_id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "departments": [
+            "camera",
+            "lighting",
+            "grip"
+          ],
+          "department_specific": false,
+          "allows_extra": true
+        },
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "plural": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized plural name"
+          },
+          "section_id": {
+            "type": "string",
+            "description": "The related section identifier",
+            "format": "uuid"
+          },
+          "departments": {
+            "type": "array",
+            "description": "The appliable departments (an empty array means appliable to all departments). You can use 'shared' special department when the position is shared between all of them.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "camera",
+                "lighting",
+                "grip",
+                "sound",
+                "shared"
+              ]
+            }
+          },
+          "allows_extra": {
+            "type": "boolean",
+            "description": "A boolean indicating if extra crew members are allowed for this position"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "plural",
+          "section_id",
+          "departments",
+          "last_update"
+        ]
+      },
+      "CrewSection": {
+        "description": "A model representing a section of the technical crew (ex. Production crew, Post-production crew, Directing crew...).\n\nCrewSections are sorted by index.",
+        "title": "CrewSection",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Directing",
+            "fr": "Mise en scène"
+          },
+          "index": 100
+        },
+        "type": "object",
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "index": {
+            "type": "number",
+            "description": "The sorting index"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "index",
+          "last_update"
+        ]
+      },
+      "ProjectType": {
+        "title": "ProjectType",
+        "description": "A model representing a type of project (ex. feature film, TV series...).\n\nProjectTypes are sorted by index.",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Feature Film",
+            "fr": "Long métrage"
+          },
+          "plural": {
+            "en": "Feature Films",
+            "fr": "Longs métrages"
+          },
+          "index": 0
+        },
+        "type": "object",
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "plural": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized plural name"
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sorting index"
+          },
+          "episodable": {
+            "type": "boolean",
+            "description": "A boolean indicating wether the project type is episodable (ie. decomposable into episods and seasons)"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "plural",
+          "index",
+          "last_update"
+        ]
+      },
+      "RentalGroup": {
+        "title": "RentalGroup",
+        "type": "object",
+        "description": "A model representing a group of rental houses (ex. Panavision, Keslow Camera...)",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Panavision"
+          }
+        },
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "last_update"
+        ]
+      },
+      "RentalHouse": {
+        "title": "RentalHouse",
+        "type": "object",
+        "description": "A model representing a rental company for a single location (ex. Panavision Hollywood, TSF Paris...)",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "name": {
+            "en": "Keslow Camera"
+          },
+          "group_id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "address": "5900 Blackwelder St, Culver City, CA 90232",
+          "latitude": "34.030748335549816",
+          "longitude": "-118.37444033060973",
+          "city_id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "url": "https://www.keslowcamera.com",
+          "phone": "+1 310 636 4600",
+          "email": "hello@keslowcamera.com",
+          "facebook": "keslowcamera",
+          "instagram": "keslowcamera"
+        },
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier (prefixed with AST)",
+            "format": "uuid"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "group_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "The related group identifier (when exists)"
+          },
+          "address": {
+            "type": "string",
+            "description": "The full address (including ZIP and city)"
+          },
+          "latitude": {
+            "type": "string",
+            "description": "The coordinate latitude"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "The coordinate longitude"
+          },
+          "city_id": {
+            "type": "string",
+            "description": "The nearest city identifier"
+          },
+          "url": {
+            "type": "string",
+            "description": "The website URL"
+          },
+          "phone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The main phone number"
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "email",
+            "description": "The main email address"
+          },
+          "facebook": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The Facebook profile identifier"
+          },
+          "instagram": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The Instagram profile identifier"
+          },
+          "opening_hours": {
+            "type": "object",
+            "description": "The office opening hours.",
+            "properties": {
+              "monday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time",
+                    "example": "08:00:00"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time",
+                    "example": "18:00:00"
+                  }
+                }
+              },
+              "tuesday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              },
+              "wednesday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              },
+              "thursday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              },
+              "friday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              },
+              "saturday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              },
+              "sunday": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "time"
+                  }
+                }
+              }
+            }
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "GearAttribute": {
+        "title": "GearAttribute",
+        "type": "object",
+        "description": "A model representing a gear attribute",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "entity": "lens_mount",
+          "name": {
+            "en": "ARRI LPL"
           },
-          {
-            "required": [
-              "id"
-            ],
+          "departments": [
+            "camera"
+          ],
+          "properties": {
+            "flange_focal": "44"
+          }
+        },
+        "x-tags": [
+          "Assets"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier (prefixed with AST)"
+          },
+          "entity": {
+            "type": "string",
+            "description": "The related entity key"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "departments": {
+            "type": "array",
+            "description": "The appliable departments (empty array means appliable to all departments). As the entity itself defines its appliable departments, both are combined to define the final appliable departments",
+            "items": {
+              "type": "string",
+              "enum": [
+                "camera",
+                "lighting",
+                "grip",
+                "sound"
+              ]
+            }
+          },
+          "properties": {
             "type": "object",
+            "description": "The values for properties defined within the related entity",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "$key": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        }
+      },
+      "Provider": {
+        "title": "Provider",
+        "type": "object",
+        "description": "A model representing a provider  of an entity of the dynamic model.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "badge",
+              "specification",
+              "filter",
+              "option",
+              "warning"
+            ]
+          },
+          "entity": {
+            "type": "string",
+            "description": "The related entity key"
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sorting index (ascending)."
+          },
+          "content": {
+            "type": "object"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        }
+      },
+      "GearItem": {
+        "title": "GearItem",
+        "type": "object",
+        "x-tags": [
+          "Assets"
+        ],
+        "description": "A model representing a gear item (ie. a physical equipment) from catalog",
+        "example": {
+          "id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "entity": "lens_control_unit",
+          "name": {
+            "en": "Wireless Compact Unit WCU-4"
+          },
+          "short_name": {
+            "en": "WCU-4"
+          },
+          "departments": [
+            "camera"
+          ],
+          "properties": {
+            "compatible_motors_controllers_ids": [
+              "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08"
+            ]
+          },
+          "brand_id": "AST_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "brand_mode": "required",
+          "info_message": null,
+          "width": "18",
+          "length": "14",
+          "height": "12",
+          "weight": "0.8",
+          "url": "https://www.arri.com/en/camera-systems/electronic-control-system/wcu-4",
+          "deprecated": true,
+          "hidden": false
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier (prefixed with AST)",
+            "format": "uuid"
+          },
+          "entity": {
+            "type": "string",
+            "description": "The related entity key"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "short_name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "An optional localized short name"
+          },
+          "departments": {
+            "type": "array",
+            "description": "The appliable department (empty array means appliable to all departments)",
+            "items": {
+              "type": "string",
+              "enum": [
+                "camera",
+                "lighting",
+                "grip",
+                "sound"
+              ]
+            }
+          },
+          "properties": {
+            "type": "object",
+            "description": "The values for properties defined within the related entity",
+            "properties": {
+              "$key": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "brand_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The related brand identifier (when appliable)"
+          },
+          "brand_mode": {
+            "type": "string",
+            "enum": [
+              "required",
+              "optional",
+              "hidden",
+              "customizable"
+            ],
+            "default": "required"
+          },
+          "info_message": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "An optional localized info message"
+          },
+          "width": {
+            "type": "string",
+            "description": "The product width (mm)"
+          },
+          "length": {
+            "type": "string",
+            "description": "The product length (mm)"
+          },
+          "height": {
+            "type": "string",
+            "description": "The product height (mm)"
+          },
+          "weight": {
+            "type": "string",
+            "description": "The product weight (kg)"
+          },
+          "url": {
+            "type": "string",
+            "description": "The manufacturer's product page URL"
+          },
+          "deprecated": {
+            "type": "boolean",
+            "description": "A boolean indicating if the Deprecated flag should be displayed",
+            "default": false
+          },
+          "hidden": {
+            "type": "boolean",
+            "description": "A boolean indicating if the item should be hidden within the catalog",
+            "default": false
+          },
+          "providers": {
+            "type": "array",
+            "description": "Some custom providers",
+            "items": {
+              "$ref": "#/components/schemas/Provider"
+            }
+          },
+          "last_update": {
+            "type": "string",
+            "description": "The last update date."
+          }
+        }
+      },
+      "UserType": {
+        "type": "string",
+        "enum": [
+          "person",
+          "organization",
+          "school"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@doe.com"
+          },
+          "phone_number": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "+33600000000"
+          },
+          "country_code": {
+            "type": "string",
+            "example": "FR"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserType"
+          },
+          "avatar_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "https://api.crewmate.fr/medias/avatars/AVT_1D921E18-65F1-4A70-9DE1-C34FF61C8D81.jpg"
+          }
+        },
+        "description": "A model representing a user.",
+        "title": "User"
+      },
+      "AssetRevision": {
+        "title": "AssetRevision",
+        "type": "object",
+        "description": "A model representing an Asset revision for a given property key.",
+        "example": {
+          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+          "key": "name",
+          "value": {
+            "en": "The New Name"
+          },
+          "status": "accepted",
+          "review_date": "2023-07-08T16:32:47Z",
+          "reviewer": {
+            "id": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john@doe.com",
+            "phone_number": "+33600000000",
+            "country_code": "FR",
+            "avatar_id": "avatar_1",
+            "creation_date": "2023-01-31 08:54:32",
+            "email_verified": true
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier"
+          },
+          "key": {
+            "type": "string",
+            "description": "The updated property key"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "The new value (type depends on the property key)"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "accepted",
+              "declined"
+            ],
+            "description": "The revision status"
+          },
+          "review_date": {
+            "type": "string",
+            "description": "The date at which the revision has been accepted/declined"
+          },
+          "reviewer": {
+            "$ref": "#/components/schemas/User",
+            "description": "The user who accepted/declined the revision"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ]
+      },
+      "AssetRevisionBatch": {
+        "title": "AssetRevisionBatch",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "comments": {
+            "type": "string"
+          },
+          "revisions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetRevision"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "author",
+          "date",
+          "revisions"
+        ],
+        "description": "A model representing a set of `AssetRevision` that have been made in a same request\n"
+      },
+      "DepartmentEnum": {
+        "type": "string",
+        "enum": [
+          "camera",
+          "lighting",
+          "grip",
+          "sound",
+          "photo"
+        ]
+      },
+      "Property": {
+        "type": "object",
+        "title": "Property",
+        "description": "A model representing a property (primitive or relationship) of an entity of the dynamic model.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "type": "string",
+            "description": "The unique key (lowercased)"
+          },
+          "type": {
+            "enum": [
+              "bool",
+              "integer",
+              "decimal",
+              "string",
+              "locstring",
+              "@entity",
+              "computed"
+            ],
+            "description": "The property type (relationships have @ prefix followed by the destination entity key)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "The localized name"
+          },
+          "helper": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "A localized helper message for the admin panel"
+          },
+          "array": {
+            "type": "boolean",
+            "description": "A boolean indicating if several values are allowed for this property"
+          },
+          "default": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "description": "The default value",
+            "items": {}
+          },
+          "inverse": {
+            "type": "string",
+            "description": "The property key of the inverse relationship (for relationship properties only)"
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sorting index (ascending)."
+          },
+          "keypath": {
+            "type": "string",
+            "description": "The keypath to use for computing value(s) (for computed properties only)"
+          },
+          "sort_descriptors": {
+            "type": "array",
+            "description": "Some sort descriptors for ordering the values (for computed properties only)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        }
+      },
+      "Entity": {
+        "title": "Entity",
+        "type": "object",
+        "description": "A model representing an entity of the dynamic model.",
+        "example": {
+          "id": "MDL_497F6ECA-6276-4993-BFEB-53CBBBBA6F08",
+          "type": "attribute",
+          "key": "lens_mount",
+          "name": {
+            "en": "Lens Mount",
+            "fr": "Monture"
+          },
+          "departments": [
+            "camera"
+          ],
+          "updated_at": "2019-08-25T11:01:47Z",
+          "created_at": "2019-08-24T14:15:22Z",
+          "author": {
+            "id": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john@doe.com",
+            "phone_number": "+33600000000",
+            "country_code": "FR",
+            "avatar_id": "avatar_1",
+            "creation_date": "2023-01-31 08:54:32",
+            "email_verified": true
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "enum": [
+              "attribute",
+              "item"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "description": "The unique key (lowercased)"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString"
+          },
+          "departments": {
+            "type": "array",
+            "description": "The appliable departments (empty means appliable to all departments)",
+            "items": {
+              "enum": [
+                "camera",
+                "sound",
+                "lighting",
+                "grip"
+              ]
+            }
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Property"
+            }
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Provider"
+            }
+          },
+          "assets_name_template": {
+            "$ref": "#/components/schemas/LocaleString",
+            "description": "A localized template for customizing the assets name"
+          },
+          "assets_sort_descriptors": {
+            "type": "array",
+            "description": "Some sort descriptors for customizing the assets sorting",
+            "items": {
+              "type": "string"
+            }
+          },
+          "composable_set_items": {
+            "type": "string",
+            "description": "The key of the entity's relationship targetting the selectable items (for composable sets only)"
+          },
+          "parentable_entities": {
+            "type": "array",
+            "description": "The keys of the entities that can be set as parent of a given entry of the current entity. Empty array means all entities are appliable, whereas a null value (default) means no parent is assignable.",
+            "items": {}
+          }
+        }
+      },
+      "Category": {
+        "title": "Category",
+        "type": "object",
+        "description": "A model representing a category from the dynamic model.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocaleString"
+          },
+          "entity": {
+            "$ref": "#/components/schemas/Entity"
+          },
+          "parent_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The parented category id"
+          },
+          "children": {
+            "type": "array",
+            "description": "The children categories",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          "color": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The HTML color code prefixed with # (for root categories only)"
+          },
+          "default_grouping_filter_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "ID of provider (filter type) used to generate sub-category"
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sorting index (ascending)."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last update date."
+          }
+        }
+      },
+      "Publication": {
+        "title": "Publication",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "MOD_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LicencePlan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the plan"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the plan"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description of the plan"
+          },
+          "prices": {
+            "type": "array",
+            "description": "Array of the different prices",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ID to send to select this price"
+                },
+                "currency": {
+                  "type": "string",
+                  "enum": [
+                    "eur",
+                    "usd",
+                    "thb"
+                  ],
+                  "description": "Three letters for the currency"
+                },
+                "recurring": {
+                  "type": "string",
+                  "enum": [
+                    "month",
+                    "year"
+                  ],
+                  "description": "Recurrence of the payment"
+                },
+                "amount": {
+                  "type": "integer",
+                  "description": "The amount for one unit in cents"
+                }
               }
             }
           }
-        ]
+        },
+        "example": {
+          "id": "prod_NZKdYqrwEYx6i0",
+          "name": "Pro Plan",
+          "description": "Perfect for business",
+          "prices": [
+            {
+              "id": "price_1MoBy5LkdIwHu7ixZhnattb0",
+              "currency": "euro",
+              "recurring": "month",
+              "amount": 990
+            },
+            {
+              "id": "price_4654D1fGgdegG01g245H54gh",
+              "currency": "euro",
+              "recurring": "year",
+              "amount": 9900
+            }
+          ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "ProjectIndex": {
+        "title": "Project",
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "PRJ_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA"
           },
-          "message": {
-            "type": "string"
+          "reference": {
+            "type": "string",
+            "example": "AZERTY"
+          },
+          "title": {
+            "type": "string",
+            "example": "John Doe S02"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
           }
+        }
+      },
+      "Project": {
+        "title": "Project",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "PRJ_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA"
+          },
+          "project_type": {
+            "$ref": "#/components/schemas/ProjectType"
+          },
+          "reference": {
+            "type": "string",
+            "example": "AZERTY"
+          },
+          "title": {
+            "type": "string",
+            "example": "John Doe S02"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "entries": {
+            "type": "array"
+          },
+          "dropbox_accounts": {
+            "type": "array"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_event_sync": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-16-02 16:14:23"
+          }
+        }
+      },
+      "Collaborator": {
+        "title": "Collaborator",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "CLB_2F790E21-22B5-4988-AB4F-36B997E0859E"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "PRJ_EC8744B9-8F3E-4EDE-A4B7-05279C1EB4EA"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@doe.com"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Given only for accepted invitations"
+          },
+          "invitation_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-15 13:08:03"
+          },
+          "invitation_sender_id": {
+            "type": "string",
+            "example": "USR_541F503C-D790-4C65-95EE-86F5C1596B18"
+          },
+          "acceptation_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "authorizations": {
+            "type": "object",
+            "properties": {
+              "$department": {
+                "type": "string",
+                "enum": [
+                  "ADMIN",
+                  "READWRITE",
+                  "READONLY"
+                ],
+                "description": "Department as key"
+              }
+            }
+          }
+        }
+      },
+      "Event": {
+        "title": "Event",
+        "type": "object",
+        "description": "Events can target a **Project** or a **User**.\n\nFor **Entry** related events, the `entry_type` and `entry_id` must be specified.\n\nThe events `content` depends on the event `type` and target.\n\n### Project Events Types:\n- `PROJECT_ARCHIVED`\n- `ENTRY_CREATED`\n- `ENTRY_MODIFIED`\n- `ENTRY_DELETED`\n- `COLLABORATOR_CREATED`\n- `COLLABORATOR_MODIFIED`\n- `COLLABORATOR_DELETED`\n\n### User Events Types:\n- `ENTRY_CREATED`\n- `ENTRY_MODIFIED`\n- `ENTRY_DELETED`\n\n### Entries Types:\n- `PROJECT_DETAIL`\n- `CREW_MEMBER`\n- `GEAR_ENTRY`\n- `CUSTOM_ITEM`",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "EVT_E5E99688-8CC6-48B2-AE7D-0B1C1AE7FF48"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of event",
+            "example": "ENTRY_CREATED"
+          },
+          "target_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "ETR_769ED6D6-BAA2-42F3-8C51-13DF525C8D41"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The event's rectified date (server time)",
+            "example": "2023-02-15 19:19:12"
+          },
+          "author_id": {
+            "type": "string",
+            "example": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81"
+          },
+          "app_build": {
+            "type": "integer",
+            "description": "The app's build number when event has been created"
+          },
+          "content": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "An object depending on the event's type"
+          }
+        }
+      },
+      "PlatformEnum": {
+        "type": "string",
+        "enum": [
+          "ios_app",
+          "admin",
+          "rental",
+          "web",
+          "unknow"
+        ]
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "locale": {
+            "type": "string",
+            "example": "fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5"
+          },
+          "platform": {
+            "$ref": "#/components/schemas/PlatformEnum"
+          },
+          "platform_version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "v1.0.0-beta1"
+          },
+          "device_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "device_model": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "iPhone14,2"
+          },
+          "device_version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "16.0"
+          },
+          "notification_token": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "f60b4328ea0e7652d7560314d559179402636a400a4000250e9a0d040ba91961"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "platform"
+        ],
+        "title": "SessionInfo",
+        "description": "A model representing a user session."
+      },
+      "Licence": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "pro"
+            ]
+          },
+          "expired_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The expiration date"
+          }
+        },
+        "example": {
+          "level": "pro",
+          "expired_at": "2023-16-02 16:14:23"
         }
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "BEARER": {
+        "description": "A basic bearer token must be join into the header. Check [/login](#tag/Auth/operation/login)",
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "bearerFormat": "Bearer 5|69rkIhEiA53y2NW54hH00000iTEtSepWeqp4Zhbn"
+      }
+    },
+    "requestBodies": {
+      "RegisterRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "phone_number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "country_code": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "format": "password"
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "country_code",
+                "password"
+              ]
+            },
+            "examples": {
+              "David Fincher": {
+                "value": {
+                  "first_name": "David",
+                  "last_name": "Fincher",
+                  "email": "d.fincher@example.com",
+                  "phone_number": "+01 785 456 451",
+                  "country_code": "us",
+                  "password": "pa$$word"
+                }
+              }
+            }
+          }
+        },
+        "description": "Request for registering a new User"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "User are not allowed to do that action",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      },
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "InvalidRequest": {
+        "description": "The user input is not correct",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "$field": {
+                      "type": "array",
+                      "example": "Your email is invalid",
+                      "items": {
+                        "type": "string",
+                        "example": "Your email is invalid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      },
+      "Validation": {
+        "description": "Unprocessable Entity - Validation of fields have failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The email must be a valid email address"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "$key": {
+                      "type": "array",
+                      "description": "Errors description",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "email": [
+                      "The email must be a valid email address"
+                    ],
+                    "country_code": [
+                      "The country code must be at least 2 characters",
+                      "The country code can't have number"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      },
+      "UserNotFound": {
+        "description": "User Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Ok": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "NoContent": {
+        "description": "No Content"
+      }
+    },
+    "parameters": {
+      "since": {
+        "name": "since",
+        "schema": {
+          "type": "string",
+          "format": "datetime"
+        },
+        "in": "query",
+        "description": "The server date from which you want to retreive the resources",
+        "example": "2023-12-13T08:57:00"
+      },
+      "asset_id": {
+        "schema": {
+          "type": "string"
+        },
+        "name": "asset_id",
+        "in": "path",
+        "required": true,
+        "description": "The asset ID"
+      },
+      "language": {
+        "name": "Accept-Language",
+        "in": "header",
+        "description": "The languages and local that accept the request",
+        "schema": {
+          "type": "string"
+        },
+        "example": "fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5"
+      },
+      "platform": {
+        "name": "Crewmate-Platform",
+        "in": "header",
+        "description": "An enum representing the official interface that is used",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "ios_app",
+            "admin",
+            "rental",
+            "web",
+            "unknow"
+          ]
+        },
+        "example": "ios_app"
+      },
+      "platform_version": {
+        "name": "Crewmate-Platform-Version",
+        "in": "header",
+        "description": "The version of the Platform",
+        "schema": {
+          "type": "string"
+        },
+        "example": "v1.0.0-beta1"
+      },
+      "notification_token": {
+        "name": "Crewmate-Notification-Token",
+        "in": "header",
+        "description": "The token used by the current device to receive notification.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "eabeae54-14a8-11e5-b60b-1697f925ec7b"
+      },
+      "device_model": {
+        "name": "Crewmate-Device-Model",
+        "in": "header",
+        "description": "The name of the model of the current device.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "iPhone 14 generation 2"
+      },
+      "device_version": {
+        "name": "Crewmate-Device-Version",
+        "in": "header",
+        "description": "The version of the current device",
+        "schema": {
+          "type": "string"
+        },
+        "example": "iOS 17.4"
+      },
+      "entity_id": {
+        "schema": {
+          "type": "string"
+        },
+        "name": "entity_id",
+        "in": "path",
+        "description": "An existant entity ID"
+      },
+      "project_id": {
+        "schema": {
+          "type": "string"
+        },
+        "name": "project_id",
+        "in": "path",
+        "description": "An existant project ID"
+      },
+      "search": {
+        "name": "search",
+        "schema": {
+          "type": "string",
+          "example": "thomas"
+        },
+        "in": "query"
+      },
+      "limit": {
+        "name": "limit",
+        "schema": {
+          "type": "integer",
+          "example": 150
+        },
+        "description": "Maximum returned value by request",
+        "in": "query"
+      },
+      "page": {
+        "name": "page",
+        "schema": {
+          "type": "integer",
+          "example": 3
+        },
+        "description": "The page number you want to retreive",
+        "in": "query"
+      },
+      "user_id": {
+        "schema": {
+          "type": "string"
+        },
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "An existant user ID",
+        "example": "USR_1D921E18-65F1-4A70-9DE1-C34FF61C8D81"
+      },
+      "session_id": {
+        "schema": {
+          "type": "string"
+        },
+        "name": "session_id",
+        "in": "path",
+        "required": true,
+        "description": "An existant session ID"
       }
     }
-  }
+  },
+  "x-tagGroups": [
+    {
+      "name": "⚙️ General",
+      "tags": [
+        "General",
+        "OTP"
+      ]
+    },
+    {
+      "name": "🔑 Users",
+      "tags": [
+        "Auth",
+        "User",
+        "User Events",
+        "User Invitation",
+        "Payment",
+        "User Avatar"
+      ]
+    },
+    {
+      "name": "🎥 Assets",
+      "tags": [
+        "Asset",
+        "Asset Metrics",
+        "Asset Revisions"
+      ]
+    },
+    {
+      "name": "🗃️ Project",
+      "tags": [
+        "Project",
+        "Project Events",
+        "Project Revision",
+        "Collaborator",
+        "Dropbox"
+      ]
+    },
+    {
+      "name": "🧱 Models",
+      "tags": [
+        "Model Publication",
+        "Category",
+        "Entity",
+        "Property",
+        "Provider"
+      ]
+    }
+  ]
 }
